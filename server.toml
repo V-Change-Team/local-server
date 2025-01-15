@@ -1,0 +1,12 @@
+announce = false
+description = 'VChange Local Server'
+gamemode = 'Freeroam'
+host = '0.0.0.0'
+language = 'de'
+modules = ['js-module', 'js-bytecode-module', 'csharp-module']
+name = 'VChange Local Test Server'
+players = 128
+port = 7788
+resources = ['basics/*', 'load/*']
+website = 'v-change.net'
+debug = true

@@ -1,0 +1,319 @@
+﻿#mainframe {
+  border: 15px black solid;
+  height: 800px;
+  width: 1400px;
+  left: 230px;
+  top: 100px;
+  position: absolute;
+  background: white;
+}
+
+#racemode {
+  font-size: 44px;
+  position: absolute;
+  left: 75px;
+  top: 25px;
+}
+
+#dropdownmenu {
+  font-size: 22px;
+  position: absolute;
+  right: 112px;
+  top: 25px;
+}
+
+#line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: black;
+  top: 117px;
+}
+
+#raceresult {
+  position: absolute;
+  width: 100%;
+  height: 681px;
+  top: 119px;
+  overflow-y: scroll;
+}
+
+#raceinfo {
+  position: absolute;
+  left: 328px;
+  top: 42px;
+  font-size: 25px;
+}
+
+#pastBestLaps {
+  position: absolute;
+  left: 600px;
+  top: 20px;
+  background: lightgrey;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#freeRoam {
+  position: absolute;
+  left: 728px;
+  top: 20px;
+  background: lightgrey;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#close {
+  position: absolute;
+    right: 20px;
+    bottom: -47px;
+    font-size: 23px;
+    background: red;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 20px;
+    text-align: center;
+}
+
+#settings {
+  background: lightgrey;
+  position: absolute;
+  left: 353px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#setRaceLapsTitle {
+  position: absolute;
+  top: 128px;
+  left: 20px;
+  font-size: 20px;
+  z-index: 1;
+}
+#setRaceLapsText {
+  position: absolute;
+  top: 210px;
+  left: 20px;
+  font-size: 20px;
+  z-index: 1;
+}
+
+#inputRaceLaps {
+  position: absolute;
+  top: 210px;
+  left: 217px;
+  font-size: 17px;
+  width: 50px;
+  text-align: center;
+  z-index: 1;
+}
+
+#setRaceLaps {
+  position: absolute;
+  top: 247px;
+  left: 18px;
+  font-size: 18px;
+  background: lightgrey;
+  padding: 4px;
+  border-radius: 4px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+#setRaceLapsTextBorder {
+  position: absolute;
+  width: 334px;
+  height: 175px;
+  border: 2px black solid;
+  top: 117px;
+  left: -2px;
+  background-color: #e1e1e129;
+}
+
+#setQualiMinsTextBorder {
+  position: absolute;
+  width: 334px;
+  height: 175px;
+  border: 2px black solid;
+  top: 294px;
+  left: -2px;
+  background-color: #e1e1e129;
+}
+
+#resetBorder {
+  position: absolute;
+  width: 334px;
+  height: 175px;
+  border: 2px black solid;
+  top: 294px;
+  left: 334px;
+  background-color: #e1e1e129;
+}
+
+#setFreeRoamBorder {
+  position: absolute;
+  width: 334px;
+  height: 175px;
+  border: 2px black solid;
+  top: 117px;
+  left: 334px;
+  background-color: #e1e1e129;
+}
+#setQualiMinsTitle{
+  position: absolute;
+  top: 306px;
+  left: 20px;
+  font-size: 20px;
+  z-index: 1;
+}
+#setQualiMinsText {
+  position: absolute;
+  top: 386px;
+  left: 20px;
+  font-size: 20px;
+  z-index: 1;
+}
+#setFreeRoamTitle{
+  position: absolute;
+    top: 128px;
+    left: 353px;
+    font-size: 20px;
+    z-index: 1;
+}
+#setQualiMin {
+  position: absolute;
+  top: 424px;
+  left: 18px;
+  font-size: 18px;
+  background: lightgrey;
+  padding: 4px;
+  border-radius: 4px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+#inputQualiMin {
+  position: absolute;
+  top: 386px;
+  left: 217px;
+  font-size: 17px;
+  width: 50px;
+  text-align: center;
+  z-index: 1;
+}
+
+#setFreeRoam {
+  position: absolute;
+  top: 247px;
+  left: 354px;
+  font-size: 18px;
+  background: lightgrey;
+  padding: 4px;
+  border-radius: 4px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+#reset {
+  position: absolute;
+  top: 424px;
+  left: 354px;
+  font-size: 18px;
+  background: lightgrey;
+  padding: 4px;
+  border-radius: 4px;
+  z-index: 1;
+  cursor: pointer;
+}
+#resetTitle{
+  position: absolute;
+    top: 306px;
+    left: 353px;
+    font-size: 20px;
+    z-index: 1;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-weight: 400;
+  font-family: 'MS Sans-serif', 'Helvetica Neue', sans-serif;
+}
+
+td,
+th {
+  padding: 8px;
+  padding: .5rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 300;
+  font-size: 20px;
+  font-size: 1.25rem;
+}
+
+td {
+  font-family: 'MS Sans-serif', 'Segoe UI', 'Lucida Grande', sans-serif;
+}
+
+.table {
+  width: 100%;
+  padding: 16px;
+  padding: 1rem;
+}
+
+.table__heading {
+  border-bottom: 2px solid #FFC842;
+}
+
+@media (max-width: 32rem) {
+  .table__heading {
+    display: none;
+  }
+
+  .table__content {
+    display: block;
+    padding: .5rem 0;
+    background: grey;
+  }
+
+  .table__row {
+    margin: .25rem 1rem;
+    padding: .5rem 0;
+    display: block;
+    border-bottom: 2px solid #FFC842;
+  }
+
+  .table__row_grey {
+    margin: .25rem 1rem;
+    padding: .5rem 0;
+    display: block;
+    background: #bfbfbf;
+    border-bottom: 2px solid #FFC842;
+  }
+
+  .table__content:before {
+    content: attr(data-heading);
+    display: inline-block;
+    width: 5rem;
+    margin-right: .5rem;
+    color: #999;
+    font-size: .75rem;
+    font-weight: 700;
+    font-family: 'MS Sans-serif', 'Helvetica Neue', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+}
+
+h1,
+h4 {
+  margin: 50px auto 50px auto;
+  text-align: center;
+}

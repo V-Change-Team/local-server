@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,400;0,600;0,800;0,900;1,100;1,300;1,500;1,700;1,900&display=swap');
+*{
+    font-family: 'Montserrat' !important;
+
+}
+</style>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+	alt.on('Tacho_VehicleSeat:data', data => {
+		let vehicleSeat = data.vehicleSeat;
+		let vehicleClass = data.vehicleClass;
+		// hideSpeedo();
+		hideLocation();
+		if (vehicleSeat) {
+			showSpeedo();
+			showLocation();
+		} else {
+			showSpeedoPassenger();
+		}
+		if (vehicleClass == 13) {
+			hideFuelScale();
+		}
+	});
+
+	alt.on("CEF:HUD:SeatbeltOnSound", () => {
+		seatbeltAudio = new Audio('./audio/seatbelt_on.mp3');
+		seatbeltAudio.loop = false;
+		seatbeltAudio.volume = 0.2;
+		seatbeltAudio.play();
+	});
+
+	alt.on("CEF:HUD:SeatbeltOffSound", () => {
+		seatbeltAudio = new Audio('./audio/seatbelt_off.mp3');
+		seatbeltAudio.loop = false;
+		seatbeltAudio.volume = 0.2;
+		seatbeltAudio.play();
+	});
+
+	alt.on('Tacho_Seatbelt:data', data => {
+		updateSeatbelt(data.seatbelt);
+	});
+
+	alt.on('Tacho_Update:data', data => {
+		let speed = data.speed;
+		let gear = data.gear;
+		let rpm = data.rpm;
+		let isElectric = data.isElectric;
+		let lockState = data.lockState;
+		let lightson = data.lightson;
+		let beamon = data.beamon;
+		let seatbelt = data.seatbelt;
+		let fuel = data.fuel;
+		let miles = data.miles;
+		let engine = data.engine;
+		let direction = data.direction;
+		let street = data.street;
+		let area = data.area;
+		update(speed, fuel, lightson, beamon, miles, lockState, gear, 1, seatbelt, engine)
+		setLocationData(direction, street, area);
+	});
+
+    function changeLeftIndicator(mode){
+        elem = document.getElementById("leftind");
+        switch (mode){
+            case 1: elem.classList.remove('indicator-off'); elem.classList.add('ani');break;
+            case 0: elem.classList.add('indicator-off'); elem.classList.remove('ani');break;
+        }
+    }
+    function changeRightIndicator(mode){
+        elem = document.getElementById("rightind");
+        switch (mode){
+            case 1: elem.classList.remove('indicator-off'); elem.classList.add('ani');break;
+            case 0: elem.classList.add('indicator-off'); elem.classList.remove('ani');break;
+        }
+    }
+
+	function update(speed, fuel, lightson, beamon, km, locked, gear, vehClass, seatbelt, engine) {
+		updateSpeed(speed, gear, vehClass);
+		updateKM(km);
+		updateFuel(fuel);
+		updateLights(lightson, beamon, engine);
+		// updateLocked(locked);
+		updateGear(gear, speed, vehClass);
+		updateSeatbelt(seatbelt);
+	}
+	function updateGear(gear, speed, vehClass) {
+		let newGear = gear === 0 && speed ? 'R' : gear; // Wenn 0 und Geschwindigkeit dann 'R'
+		newGear = vehClass === 15 ? 1 : newGear; // Wenn Helikopter immer '1'
+		let geardiv = document.getElementById("gearid")
+
+		geardiv.innerHTML= newGear;
+	}
+
+    function updateSpeed(speed, gear, vehClass){
+        calcPerc(speed)
+        elem = document.getElementById("speed");
+        const x = 3 - speed.toString().length
+        if (x === 2){
+            elem.innerHTML = `<span>00</span>` + speed;
+        } else if( x === 1){
+            elem.innerHTML = `<span>0</span>` + speed;
+        } else {
+            elem.innerHTML = speed;
+        }
+    }
+	function updateKM(miles) {
+		let maxKm = 999999.9;
+		let newKm = miles < maxKm ? miles.toString().match(/^\d+(?:\.\d{0,1})?/) : maxKm + '+';
+		let x = 5 - miles.toString().length
+		elem = document.getElementById("miles");
+		if(x === 4){
+          elem.innerHTML = '<span>0000</span>' + newKm;
+        } else if(x === 3){
+          elem.innerHTML = '<span>000</span>' + newKm;
+        } else if(x === 2){
+            elem.innerHTML = '<span>00</span>' + newKm;
+        }else if(x === 1){
+            elem.innerHTML = '<span>0</span>' + newKm;
+        }else if(x === 0){
+            elem.innerHTML = newKm;
+        } else {
+            elem.innerHTML = newKm;
+        }
+	}
+	function updateFuel(percent) {
+        if (isNaN(percent)) {
+          return;
+        }
+        percent = percent / 100;
+        var angle = clamp(percent *  100, 0, 100) + 13;
+        var paddedRadius = 49.5 + 1;
+        var radians = (angle * Math.PI / 175);
+        var x = Math.sin(radians) * paddedRadius;
+        var y = Math.cos(radians) * -paddedRadius;
+        var mid = (angle > 180) ? 1 : 0;
+        var pathData = 'M 0 0 v -%@ A %@ %@ 1 '.replace(/%@/gi, paddedRadius) +
+            mid + ' 1 ' +
+            x + ' ' +
+            y + ' z';
+        var bar = document.getElementsByClassName('progress-radial-bar3')[0];
+        bar.setAttribute('d', pathData);
+      }
+	function updateSeatbelt(status) {
+        let y = '';
+        let x = null;
+        if(status!=true)
+		{
+        	x = document.getElementById('seatbelt');
+        	x.classList.add("dial-off");
+		}
+		else{
+			x = document.getElementById('seatbelt');
+            x.classList.remove("dial-off")
+		}
+    }
+	function updateLights(lightson, beamon, engine) {
+		let lightStatus;
+		let y = '';
+        let x = null;
+
+		if (lightson && !beamon) {
+			lightStatus = 'general';
+		} else if (beamon && lightson) {
+			lightStatus = 'beam';
+		}
+		if(!beamon && !lightson){
+			lightStatus='out';
+		}
+
+		if(lightStatus==='beam')
+		{
+			x = document.getElementById('lights');			
+        	x.classList.add("dial-beam");
+			x.classList.remove("dial-general");	
+		}if(lightStatus==='general'){
+			x = document.getElementById('lights');
+			x.classList.remove("dial-beam");
+        	x.classList.add("dial-general");	
+		}
+		if(lightStatus!='beam'&&lightStatus!='general'){
+			x = document.getElementById('lights');
+			x.classList.add("dial-off");
+        	x.classList.remove("dial-beam");
+			x.classList.remove("dial-general");
+		}		
+	}
+
+	function changeDial(mode, dial){
+        let y = '';
+        let x = null;
+        switch (mode){
+            case "off": x = document.getElementById(dial);
+                        x.classList.add("dial-off");break;
+
+            case "on": x = document.getElementById(dial);
+                       x.classList.remove("dial-off")
+        }
+    }
+    function calcPerc(speed){
+            drawProgress( speed / 220)
+    }
+    function clamp(n, min, max) {
+        return Math.max(min, Math.min(max, n));
+    }
+	function setLocationData(direction, street, area) {
+		document.getElementById("location-direction").innerHTML = direction;
+        document.getElementById("location-streetname").innerHTML = street;
+        document.getElementById("location-area").innerHTML = area;
+	}
+	function showLocation() {
+		$('#speedo-location').addClass('fade');
+	}
+	function hideLocation() {
+		$('#speedo-location').removeClass('fade');
+	}
+	function hideFuelScale() {
+		$('#speedo-left').hide();
+	}
+	function showSpeedoPassenger() {
+		$('#speedo-passenger-wrapper').addClass('fade');
+	}
+	function showSpeedo() {
+		$('#speedo-wrapper').addClass('fade');
+	}
+	function hideSpeedo() {
+		$('#speedo-wrapper').removeClass('fade');
+		$('#speedo-passenger-wrapper').removeClass('fade');
+	}
+
+    function drawProgress(percent) {
+        if (isNaN(percent)) {
+          return;
+        }
+        percent = clamp(parseFloat(percent), 0, 1);
+        var angle = clamp(percent * 282, 0, 359.99999);
+        var paddedRadius = 49 + 1;
+        var radians = (angle * Math.PI / 180);
+        var x = Math.sin(radians) * paddedRadius;
+        var y = Math.cos(radians) * -paddedRadius;
+        var mid = (angle > 180) ? 1 : 0;
+        var pathData = 'M 0 0 v -%@ A %@ %@ 1 '.replace(/%@/gi, paddedRadius) +
+            mid + ' 1 ' +
+            x + ' ' +
+            y + ' z';
+
+        var bar = document.getElementsByClassName('progress-radial-bar2')[0];
+        bar.setAttribute('d', pathData);
+    }
+</script>
+<body>
+    <div style="width: fit-content; position: absolute; bottom: -4vh;right:0vh;height:30vh;overflow: hidden; transform: scale(.7);">
+    <div class="box">
+        <div class="gage">
+            <div class="gage-cont" id="gearid">
+				N
+            </div>
+        </div>
+        <div class="miles">
+            <div class="indicator-left">
+                <img src="left.png" alt="left indicator" id="rightind" class="indicator-off">
+              </div>
+            <div class="miles-cont" id="miles">
+                <span>00</span>235
+            </div>
+            <div class="indicator-right">
+                <img src="right.png" alt="right indicator" id="leftind" class="indicator-off">
+              </div>
+        </div>
+        <div class="info-container">
+            <div class="speed">
+                <div class="speed-num" id="speed">
+                    <span>0</span>25
+                </div>
+                <div class="speed-tag">
+                    MPH
+                </div>
+            </div>
+        </div>
+        <div class="speed-indicator" id="id-20">
+            20
+        </div>
+        <div class="speed-indicator speed-40" id="id-40">
+            40
+        </div>
+        <div class="speed-indicator speed-60" id="id-60">
+            60
+        </div>
+        <div class="speed-indicator speed-80" id="id-80">
+            80
+        </div>
+        <div class="speed-indicator speed-100" id="id-100">
+            100
+        </div>
+        <div class="speed-indicator speed-120" id="id-120">
+            120
+        </div>
+        <div class="speed-indicator speed-140" id="id-140">  
+            140
+        </div>
+        <div class="speed-indicator speed-160" id="id-160">
+            160
+        </div>
+        <div class="speed-indicator speed-180" id="id-180">
+            180
+        </div>
+        <div class="speed-indicator speed-200" id="id-200">
+            200
+        </div>
+      <div class="speed-container">
+          <div id="dashed-circle-progress">
+            <div>
+                <!-- <div class="speedobg"></div> -->
+              <svg class="progress-radial" style="background-color: #00000060; border-radius: 50%;" width="32vh" height="32vh"
+                  viewBox="0 0 100 100" shape-rendering="geometricPrecision">
+                <defs>
+                  <mask id="circle_mask" x="0" y="0" width="100" height="100" maskUnits="userSpaceOnUse">
+                    <circle id="bar"
+                            r="20"
+                            cx="50"
+                            cy="50"
+                            fill="#000"
+                            stroke-dasharray="9"
+                            stroke-dashoffset="4.99"
+                            stroke="white"
+                            stroke-width="192"/>
+
+                    <circle class="progress-radial-mask-inner"
+                            cx="50"
+                            cy="50"
+                            r="47"
+                            fill="black"
+                            opacity="1"/>
+                  </mask>
+                </defs>
+                <g mask="url(#circle_mask)">
+                  <circle class="progress-radial-track"
+                          cx="50"
+                          cy="50"
+                          r="50"
+                          opacity=".8"
+                          fill="rgb(11, 11, 21)"/>
+                  <path class="progress-radial-bar2"
+                        transform="translate(50, 50)"
+                        d="M 0 0"
+                        fill="#71b2ef">
+                  </path>
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="dials">
+            <img src="./engine.png" alt="engine Icon" class="dial-img" id="engine">
+            <img src="./seatbelt.png" alt="seatbelt Icon" class="dial-img" id="seatbelt">
+            <img src="./lights.png" alt="lights Icon" class="dial-img" id="lights">
+        </div>
+    </div>
+</div>
+<div style="width: fit-content; position: absolute; bottom: -2.2vh;right:.5vh;height:30vh;overflow: hidden;transform: scale(.7)">
+    <div class="fuel-indicator">
+        <img src="gas-station.png" alt="fuel icon" style="width: 2vh;">
+      </div>
+    <div class="box2">   
+      <div class="speed-container2">
+          <div id="dashed-circle-progress2">
+            <div>
+              <svg class="progress-radial2" width="38vh" height="38vh"
+                  viewBox="0 0 100 100" shape-rendering="geometricPrecision">
+                <defs>
+                  <mask id="circle_mask2" x="0" y="0" width="100" height="100" maskUnits="userSpaceOnUse">
+                    <circle id="bar2"
+                            r="20"
+                            cx="50"
+                            cy="50"
+                            fill="transparent"
+                            stroke-dasharray="9"
+                            stroke-dashoffset="315"
+                            stroke="white"
+                            stroke-width="192"/>
+    
+                    <circle class="progress-radial-mask-inner2"
+                            cx="50"
+                            cy="50"
+                            r="48"
+                            fill="black" 
+                            opacity="1"/>
+                  </mask>
+                </defs>
+                <g mask="url(#circle_mask2)">
+                  <circle class="progress-radial-track2"
+                          cx="50"
+                          cy="50"
+                          r="50"
+                          opacity=".8"
+                          fill="rgba(0,0,0,.4)"/>
+                  <path class="progress-radial-bar3"
+                        transform="translate(50, 50)"
+                        d="M 0 0"
+                        fill="#71b2ef">
+                  </path>
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div> 
+    </div>
+  </div>
+  <div id="speedo-location">		
+    <div id="streetContainer">
+        <div id="location-streetname">Streetname</div>
+        <div id="location-area">Area</div>
+    </div>
+    <div id="location-direction">N</div>
+</div>
+</body>
+
+</html>

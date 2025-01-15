@@ -1,0 +1,4 @@
+client-files = [ 'dist/client.bundle.js' ]
+client-main = 'dist/client.bundle.js'
+main = 'dist/server.bundle.js'
+type = 'js'

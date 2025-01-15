@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+
+	let alllaptimeArray = [];
+	let laptimeArray = [];
+	let fuelConsumption = [];
+	let fuelLastRound = 0;
+
+
+	alt.on('RacetrackShowHud', data => {
+		showHud();
+	});
+	alt.on('RacetrackHideHud', data => {
+		hideHud();
+	});
+	alt.on('updateFuel:data', data => {
+		let fuel = data.fuel;
+		setFuel(fuel);
+	});
+
+	alt.on('TrackFirstLap:data', data => {
+		let lapTime = data.lapTime;
+		let lapcounter = data.lapcounter;
+		let fuel = data.fuel;
+		laptimeArray = [];
+		fuelLastRound = fuel;
+		setFuel(fuel);
+		setLap(lapcounter);
+		currentLapTimer();
+		let tempArray = [];
+	});
+	alt.on('TrackTime:data', data => {
+		let lapTime = data.lapTime;
+		let lapcounter = data.lapcounter;
+		let fuel = data.fuel;
+
+		setDiffLastLap(lapTime);
+
+		laptimeArray.push(lapTime);
+		alllaptimeArray.push(laptimeArray);
+		laptimeArray = [];
+
+		let tempArray = [];
+		tempArray.push(lapcounter);
+		tempArray.push(fuelLastRound - fuel);
+		fuelConsumption.push(tempArray);
+
+		setFuelLast(fuelLastRound - fuel);
+		fuelLastRound = fuel;
+		setFuel(fuel);
+		setLap(lapcounter);
+		currentLapTimer();
+		clearSplit();
+		getBestLap();
+		getAvgFuel();
+		setLastLap(lapTime);
+	});
+
+	alt.on('TrackTimesplit1:data', data => {
+		let split = data.split;
+
+		$("#split1lap").text(msToTime(split));
+		laptimeArray.push(split);
+		getFastestLapSplit1(split);
+
+	});
+	alt.on('TrackTimesplit2:data', data => {
+		let split = data.split;
+		laptimeArray.push(split);
+		$("#split2lap").text(msToTime(split));
+		getFastestLapSplit2(split);
+
+	});
+
+	function showHud() {
+		$("#mainframe").show();
+	}
+	function hideHud() {
+		$("#mainframe").hide();
+	}
+	function setLastLap(_time) {
+		$("#lastlap").text(msToTime(_time));
+	}
+	function setDiffLastLap(lapTime) {
+		let fastestLap = 9999999999;
+		if (alllaptimeArray.length == 0) return;
+		for (let i = 0; i < alllaptimeArray.length; i++) {
+			if (alllaptimeArray[i][2] < fastestLap) {
+				fastestLap = alllaptimeArray[i][2];
+			}
+		}
+		if (lapTime < fastestLap) {
+			$("#lastlapperformance").text(msToTime(fastestLap - lapTime));
+			$("#lastlapperformance").css('color', '#00FF00');
+		} else {
+			$("#lastlapperformance").text(msToTime(lapTime - fastestLap));
+			$("#lastlapperformance").css('color', 'red');
+		}
+	}
+
+	function getFastestLapSplit1(split) {
+		let fastestLap = 9999999999;
+		let fastestSplit1 = 999999999;
+		for (let i = 0; i < alllaptimeArray.length; i++) {
+			if (alllaptimeArray[i][2] < fastestLap) {
+				fastestLap = alllaptimeArray[i][2];
+				fastestSplit1 = alllaptimeArray[i][0];
+			}
+		}
+		if (split < fastestSplit1) {
+			$("#split1difflap").text(msToTime(fastestSplit1 - split));
+			$("#split1difflap").css('color', '#00FF00');
+		} else {
+			$("#split1difflap").text(msToTime(split - fastestSplit1));
+			$("#split1difflap").css('color', 'red');
+		}
+	}
+	function getFastestLapSplit2(split) {
+		let fastestLap = 9999999999;
+		let fastestSplit2 = 999999999;
+		for (let i = 0; i < alllaptimeArray.length; i++) {
+			if (alllaptimeArray[i][2] < fastestLap) {
+				fastestLap = alllaptimeArray[i][2];
+				fastestSplit2 = alllaptimeArray[i][1];
+			}
+		}
+		if (split < fastestSplit2) {
+			$("#split2difflap").text(msToTime(fastestSplit2 - split));
+			$("#split2difflap").css('color', '#00FF00');
+		} else {
+			$("#split2difflap").text(msToTime(split - fastestSplit2));
+			$("#split2difflap").css('color', 'red');
+		}
+	}
+	function setFuelLast(_fuel) {
+		$("#fuellast").text(_fuel.toFixed(1));
+	}
+	function getAvgFuel() {
+		avgFuel = 0;
+		for (let i = 0; i < fuelConsumption.length; i++) {
+			avgFuel += fuelConsumption[i][1];
+		}
+		avgFuel = avgFuel / fuelConsumption.length
+		$("#average").text(avgFuel.toFixed(1));
+	}
+	function getBestLap() {
+		let fastestLap = 9999999999;
+		for (let i = 0; i < alllaptimeArray.length; i++) {
+			if (alllaptimeArray[i][2] < fastestLap) {
+				fastestLap = alllaptimeArray[i][2];
+			}
+		}
+		$("#bestlap").text(msToTime(fastestLap));
+	}
+	function clearSplit() {
+		$("#split1lap").text("--:--.---");
+		$("#split1difflap").text("--.---");
+		$("#split2lap").text("--:--.---");
+		$("#split2difflap").text("--.---");
+
+		$("#split1difflap").css('color', 'white');
+		$("#split2difflap").css('color', 'white');
+	}
+	function setLap(lap) {
+		$("#lap").text(lap);
+	}
+	function setFuel(fuel) {
+		if (fuel < 0) {
+			fuel = 0;
+		}
+		$("#fuel").text(fuel.toFixed(1));
+	}
+
+	var timer = null;
+	var currentlapbeginn;
+	function currentLapTimer() {
+		clearTimeout(timer);
+		currentlapbeginn = Date.now();
+		timer = setInterval(function () { _lapTimer(); }, 50);
+	}
+	function _lapTimer() {
+		$("#currentlaplap").text(msToTime(Date.now() - currentlapbeginn));
+	}
+
+	function msToTime(duration) {
+		var milliseconds = Math.floor((duration % 1000) / 10),
+			seconds = Math.floor((duration / 1000) % 60),
+			minutes = Math.floor((duration / (1000 * 60)) % 60),
+			hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+		hours = (hours < 10) ? "0" + hours : hours;
+		minutes = (minutes < 10) ? "0" + minutes : minutes;
+		seconds = (seconds < 10) ? "0" + seconds : seconds;
+		milliseconds = (milliseconds < 10) ? "0" + milliseconds : milliseconds;
+		return minutes + ":" + seconds + "." + milliseconds;
+	}
+
+</script>
+
+
+<div id="mainframe" style="Display:none">
+	<div id="fuellastframe">
+		<div id="fuellasttitle">Fuel Last</div>
+		<div id="fuellast">0.0</div>
+	</div>
+	<div id="fuelaverageframe">
+		<div id="fuellaveragetitle">Average</div>
+		<div id="average">0.0</div>
+	</div>
+	<div id="fuelframe">
+		<div id="fueltitle">Fuel</div>
+		<div id="fuel">0.0</div>
+	</div>
+	<div id="bestlapframe">
+		<div id="bestlaptitle">Best Lap</div>
+		<div id="bestlap">--:--.---</div>
+	</div>
+	<div id="lapframe">
+		<div id="laptitle">Lap</div>
+		<div id="lap">0</div>
+	</div>
+	<div id="lastlapframe">
+		<div id="lastlaptitle">Last Lap</div>
+		<div id="lastlap">--:--.---</div>
+	</div>
+	<div id="lastlapperformanceframe">
+		<div id="lastlapperformancetitle">Diff. Lap</div>
+		<div id="lastlapperformance">--:--.---</div>
+	</div>
+
+	<div id="currentlapframe">
+		<div id="currentlaptitle">Current Lap</div>
+		<div id="currentlaplap">--:--.---</div>
+	</div>
+	<div id="currentlapdiffframe">
+		<div id="currentlapdifftitle"></div>
+		<div id="currentlapdifflap">San Andreas<br>Racing</div>
+	</div>
+
+	<div id="split1frame">
+		<div id="split1title">Split 1</div>
+		<div id="split1lap">--:--.---</div>
+	</div>
+	<div id="split1diffframe">
+		<div id="split1difftitle">Diff. Split 1</div>
+		<div id="split1difflap">--:--.---</div>
+	</div>
+	<div id="split2frame">
+		<div id="split2title">Split 2</div>
+		<div id="split2lap">--:--.---</div>
+	</div>
+	<div id="split2diffframe">
+		<div id="split2difftitle">Diff. Split 2</div>
+		<div id="split2difflap">--:--.---</div>
+	</div>
+</div>

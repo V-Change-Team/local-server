@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="js/quali.js"></script>
+<script src="js/freeroam.js"></script>
+<script src="js/race.js"></script>
+<script src="js/bestlaps.js"></script>
+<script src="js/settings.js"></script>
+
+<script>
+
+	let allLapsArray = [];
+	let rank = 1;
+	let mode = 0;
+	let laps = 15;
+	let min = 15;
+	let currentTime;
+
+	alt.on('FreeRoamScreen:data', data => {
+		allLapsArray = JSON.parse(data.array);
+		rank = data.rank;
+		mode = data.mode;
+		createFreeRoamTable();
+		$("#settings").hide();
+		hideSettings();
+		if (rank > 0) {
+			$("#settings").show();
+		}
+	});
+	alt.on('QualiScreen:data', data => {
+		allLapsArray = JSON.parse(data.array);
+		rank = data.rank;
+		mode = data.mode;
+		currentTime = data.date - (60 * 60000);
+		min = data.minutes;
+
+		createQualiTable();
+
+		$("#settings").hide();
+		hideSettings();
+		if (rank > 0) {
+			$("#settings").show();
+		}
+	});
+	alt.on('RaceScreen:data', data => {
+		allLapsArray = JSON.parse(data.array);
+		rank = data.rank;
+		mode = data.mode;
+		laps = data.laps;
+
+		createRaceTable();
+		$("#settings").hide();
+		hideSettings();
+		if (rank > 0) {
+			$("#settings").show();
+		}
+	});
+
+	function closeWindow() {
+		alt.emit('client:webViewRaceScreenClose');
+	}
+	function test() {
+		allLapsArray =
+			[{ "id": 360, "split1": 32934, "split2": 63393, "laptime": 94458, "active": 1, "charid": 1694, "vehname": "Flash GT", "date": "1665304828228", "name": "Ben Frey" },
+			{ "id": 361, "split1": 33934, "split2": 64393, "laptime": 99558, "active": 1, "charid": 1694, "vehname": "Flash GT", "date": "1665305828228", "name": "Maha" },
+			{ "id": 362, "split1": 31934, "split2": 61393, "laptime": 95458, "active": 1, "charid": 1694, "vehname": "Flash GT", "date": "1665306828228", "name": "Ben Frey" }];
+
+		allLapsArray = [{ "id": 1, "split1": 28163, "split2": 58098, "laptime": 93149, "active": 0, "charid": 1694, "vehname": "Itali GTO", "date": "1664558326700", "name": "Ben Frey" }, { "id": 28, "split1": 33082, "split2": 66561, "laptime": 104342, "active": 1, "charid": 649, "vehname": "MS Buffalo STX ST", "date": "1664565076289", "name": "Vladislav Maslow" }, { "id": 32, "split1": 30145, "split2": 64560, "laptime": 102540, "active": 0, "charid": 1815, "vehname": "Flash GT", "date": "1664570218665", "name": "Nero Castro" }, { "id": 38, "split1": 30337, "split2": 64847, "laptime": 102317, "active": 1, "charid": 1042, "vehname": "Flash GT", "date": "1664574088075", "name": "Jenna_Victoria Lauser-Hale" }, { "id": 39, "split1": 29425, "split2": 61839, "laptime": 99039, "active": 1, "charid": 269, "vehname": "Flash GT", "date": "1664574139757", "name": "Dr.sc.James Lauser-Hale" }, { "id": 81, "split1": 32144, "split2": 70070, "laptime": 112876, "active": 1, "charid": 1042, "vehname": "Cypher Safety Car", "date": "1664655651800", "name": "Jenna_Victoria Lauser-Hale" }, { "id": 88, "split1": 25626, "split2": 52731, "laptime": 85409, "active": 1, "charid": 1694, "vehname": "Shinobi", "date": "1664657791253", "name": "Ben Frey" }, { "id": 99, "split1": 26372, "split2": 56263, "laptime": 90388, "active": 0, "charid": 1042, "vehname": "Shinobi", "date": "1664659203250", "name": "Jenna_Victoria Lauser-Hale" }, { "id": 107, "split1": 31763, "split2": 66284, "laptime": 105415, "active": 1, "charid": 2169, "vehname": "Rebla GTS", "date": "1664660591463", "name": "Chris Richman" }, { "id": 114, "split1": 28995, "split2": 61639, "laptime": 99347, "active": 1, "charid": 2133, "vehname": "Flash GT", "date": "1664661485482", "name": "Draco Thorne" }, { "id": 115, "split1": 37805, "split2": 83322, "laptime": 128491, "active": 1, "charid": 1132, "vehname": "Ellie", "date": "1664662267225", "name": "Fynn Kaeferson" }, { "id": 123, "split1": 34065, "split2": 70200, "laptime": 111074, "active": 0, "charid": 2086, "vehname": "Flash GT", "date": "1664664447010", "name": "Cody Tacker" }, { "id": 125, "split1": 27794, "split2": 57807, "laptime": 94288, "active": 1, "charid": 1856, "vehname": "Flash GT", "date": "1664664514162", "name": "Udo Mayer" }, { "id": 144, "split1": 29028, "split2": 61350, "laptime": 98561, "active": 1, "charid": 1734, "vehname": "Flash GT", "date": "1664665739023", "name": "Joe Black" }, { "id": 152, "split1": 45594, "split2": 79053, "laptime": 118304, "active": 1, "charid": 278, "vehname": "V-STR", "date": "1664763959860", "name": "J\u00FCrgen O\u0027Connor" }, { "id": 155, "split1": 28687, "split2": 60461, "laptime": 96900, "active": 1, "charid": 441, "vehname": "Drafter", "date": "1664764150679", "name": "Basti Stone" }, { "id": 157, "split1": 33707, "split2": 70132, "laptime": 109436, "active": 1, "charid": 1966, "vehname": "Gauntlet Classic Custom", "date": "1664764219664", "name": "Jake Dunn" }, { "id": 224, "split1": 28821, "split2": 59737, "laptime": 96797, "active": 1, "charid": 1011, "vehname": "Flash GT", "date": "1664826622145", "name": "Sam Benning" }, { "id": 243, "split1": 28386, "split2": 58885, "laptime": 95358, "active": 1, "charid": 2124, "vehname": "Flash GT", "date": "1664828167601", "name": "Chris Haudegen" }, { "id": 263, "split1": 32451, "split2": 67563, "laptime": 105870, "active": 1, "charid": 1984, "vehname": "Raiden", "date": "1664909960306", "name": "Marcello_Diego Martinez" }, { "id": 280, "split1": 29057, "split2": 60435, "laptime": 97776, "active": 1, "charid": 1522, "vehname": "Flash GT", "date": "1664913155165", "name": "Wilke Mayer" }, { "id": 284, "split1": 34305, "split2": 67842, "laptime": 109384, "active": 1, "charid": 2043, "vehname": "Cinquemila", "date": "1664922887081", "name": "Kelsey Hope" }, { "id": 288, "split1": 28706, "split2": 60367, "laptime": 96922, "active": 1, "charid": 1129, "vehname": "Flash GT", "date": "1664998787428", "name": "Ryan Brady" }, { "id": 295, "split1": 27981, "split2": 57785, "laptime": 93587, "active": 1, "charid": 2178, "vehname": "Flash GT", "date": "1665055116921", "name": "Mahavir Maji" }, { "id": 323, "split1": 27993, "split2": 57896, "laptime": 93655, "active": 1, "charid": 1694, "vehname": "Flash GT", "date": "1665078001393", "name": "Ben Frey" }, { "id": 326, "split1": 29936, "split2": 63752, "laptime": 101610, "active": 1, "charid": 2123, "vehname": "Sultan Classic", "date": "1665084719022", "name": "Jim Nagata" }, { "id": 333, "split1": 32422, "split2": 67351, "laptime": 104605, "active": 1, "charid": 975, "vehname": "LSPD Buffalo STX", "date": "1665172485091", "name": "Annika Steel" }, { "id": 335, "split1": 31122, "split2": 68132, "laptime": 106550, "active": 1, "charid": 269, "vehname": "LSPD Buffalo STX", "date": "1665172590887", "name": "Dr.sc.James Lauser-Hale" }, { "id": 340, "split1": 29144, "split2": 59918, "laptime": 97281, "active": 1, "charid": 2123, "vehname": "Flash GT", "date": "1665245140205", "name": "Jim Nagata" }, { "id": 346, "split1": 125687, "split2": 159660, "laptime": 200261, "active": 1, "charid": 2123, "vehname": "SC-1 Safety Car", "date": "1665245953337", "name": "Jim Nagata" }, { "id": 351, "split1": 34688, "split2": 74323, "laptime": 126448, "active": 1, "charid": 278, "vehname": "Veto 2", "date": "1665277869710", "name": "J\u00FCrgen O\u0027Connor" }, { "id": 358, "split1": 31784, "split2": 69221, "laptime": 117983, "active": 1, "charid": 441, "vehname": "Veto 2", "date": "1665278220811", "name": "Basti Stone" }, { "id": 359, "split1": 35546, "split2": 75969, "laptime": 126827, "active": 1, "charid": 1914, "vehname": "Veto 2", "date": "1665278266622", "name": "Bella Fehn" }];
+
+
+		//createQualiTable();
+		//createRaceTable();
+		createFreeRoamTable();
+	}
+	function hideSettings() {
+		$("#hidesettings").hide();
+	}
+
+	function msToTime(duration) {
+		var milliseconds = Math.floor((duration % 1000) / 10),
+			seconds = Math.floor((duration / 1000) % 60),
+			minutes = Math.floor((duration / (1000 * 60)) % 60),
+			hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+		hours = (hours < 10) ? "0" + hours : hours;
+		minutes = (minutes < 10) ? "0" + minutes : minutes;
+		seconds = (seconds < 10) ? "0" + seconds : seconds;
+		milliseconds = (milliseconds < 10) ? "0" + milliseconds : milliseconds;
+		return minutes + ":" + seconds + "." + milliseconds;
+	}
+	function msToTimeShort(duration) {
+		var milliseconds = Math.floor((duration % 1000) / 10),
+			seconds = Math.floor((duration / 1000) % 60),
+			minutes = Math.floor((duration / (1000 * 60)) % 60),
+			hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+		hours = (hours < 10) ? "0" + hours : hours;
+		minutes = (minutes < 10) ? "0" + minutes : minutes;
+		seconds = (seconds < 10) ? "0" + seconds : seconds;
+		milliseconds = (milliseconds < 10) ? "0" + milliseconds : milliseconds;
+		return hours + ":" + minutes + ":" + seconds;
+	}
+</script>
+
+
+<div id="mainframe" style="Display:table">
+	<div id="racemode">Rennen</div>
+	<div id="raceinfo"></div>
+	<select id="dropdownmenu" onchange="changeVehicle(this.value);">
+
+	</select>
+	<div id="line"></div>
+	<div id="close" onclick="closeWindow()">X</div>
+	<div id="pastBestLaps" onclick="createBestLapsTable()">Bestenliste</div>
+	<div id="freeRoam" onclick="createFreeRoamTable()">Freie Fahrt</div>
+	<div id="settings" onclick="settings()">Settings</div>
+
+
+	<div id="hidesettings">
+
+		<div id="setRaceLapsTitle"><span style="font-weight: bold;">Rennen</span><br><span style="font-size:15px;">Lege
+				die Anzahl der Rennrunden fest</span></div>
+		<div id="setRaceLapsText">Rundenanzahl</div>
+		<div id="setRaceLaps" onclick="setRaceLaps()">Rennmodus starten</div>
+		<input id="inputRaceLaps" type="number" value="15">
+		<div id="setRaceLapsTextBorder"></div>
+
+
+		<div id="setQualiMinsTitle"><span style="font-weight: bold;">Qualifying</span><br><span
+				style="font-size:15px;">Lege die Anzahl der Minuten fest</span></div>
+		<div id="setQualiMinsText">Minuten</div>
+		<div id="setQualiMin" onclick="setQualiMin()">Qualifying starten</div>
+		<input id="inputQualiMin" type="number" value="15">
+		<div id="setQualiMinsTextBorder"></div>
+
+		<div id="resetTitle"><span style="font-weight: bold;">Zurücksetzen</span><br><span style="font-size:15px;">Damit
+				werden alle aktuellen Ergebnisse<br>zurückgesetzt</span></div>
+		<div id="reset" onclick="reset()">Ergebnis zurücksetzen</div>
+		<div id="resetBorder"></div>
+
+		<div id="setFreeRoamTitle"><span style="font-weight: bold;">Freie fahrt</span><br><span
+				style="font-size:15px;">Für den öffentlichen Betrieb oder Training</span></div>
+		<div id="setFreeRoam" onclick="setFreeRoam()">Freie fahrt starten</div>
+		<div id="setFreeRoamBorder"></div>
+	</div>
+
+	<div id="raceresult">
+
+	</div>
+</div>

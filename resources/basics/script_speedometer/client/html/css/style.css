@@ -1,0 +1,582 @@
+﻿@font-face {
+    font-family: 'DS-Digital';
+    src: url('../fonts/DS-Digital-Bold.eot');
+    src: url('../fonts/DS-Digital-Bold.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/DS-Digital-Bold.woff2') format('woff2'),
+    url('../fonts/DS-Digital-Bold.woff') format('woff'),
+    url('../fonts/DS-Digital-Bold.ttf') format('truetype'),
+    url('../fonts/DS-Digital-Bold.svg#DS-Digital-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Slenco";
+    src: url('../fonts/Slenco-Black.otf');
+}
+	body {
+        user-select:none;
+        overflow: hidden;
+        /* background-image: url(../bg.png);
+        background-size: cover; */
+	}
+
+	#speedo-wrapper.fade, #speedo-passenger-wrapper.fade, #speedo-location.fade {
+		opacity: 1;
+        transition: opacity 0.35s linear;
+	}
+
+    #speedo-wrapper{
+        opacity: 0;
+        position: absolute;
+        right: 2%;
+        bottom: 3%;
+
+        display: flex;
+        align-items: flex-end;
+    }
+
+    #speedo-location {
+        opacity: 100;
+        font-family: Slenco;
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        height: 6vh;
+        bottom: 1px;
+        right: 25%;
+        width: 300px;
+        text-shadow: black 7px 7px 7px;
+        align-content: center;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    #location-direction {
+        position: relative;
+        display: flex;
+        color: white;
+        background: rgba(0,0,0,1);
+        width: 65px;
+        height: 65px;
+        left: 100px;
+        border-radius: 100%;
+        text-align: center;
+        font-size: 2vh;
+        line-height: 5vh;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
+    }
+    #streetContainer {
+        position: absolute;
+        display: flex;
+        height: 5.5vh;
+        color: white;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    #speedo-left, #speedo-right{
+        background: var(--container-bg);
+        border: solid 4px white;
+        box-shadow: var(--shadow);
+        border-radius: 50%;
+        position: relative;
+    }
+
+    #speedo-left{
+        width: 150px;
+        height: 150px;
+        background:rgba(0,0,0,1);
+    }
+
+    #speedo-left .needle{
+        transform: rotate(-72deg);
+    }
+
+    #reserveLight{
+        position: absolute;
+        top: 45%;
+        left: 22%;
+        height: 0.4vw;
+        width: 0.4vw;
+        border-radius: 50%;
+        background: #333333;
+    }
+    #reserveLight.on{
+        background: #FFBD4A;
+    }
+
+    #status-lights{
+        position: absolute;
+        left: 50%;
+        bottom: 14%;
+        transform: translateX(-50%);
+        width: 70%;
+        height: 25%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #status-lights > div{
+        width: calc(100% / 3);
+        height: 100%;
+        position: relative;
+    }
+    #status-lights > div::before{
+        content: '';
+        width: 80%;
+        height: 80%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .seatbelt::before{
+        background-image: url("../img/seatbelt_open.svg");
+    }
+    .seatbelt.closed::before{
+        background-image: url("../img/seatbelt_closed.svg");
+    }
+
+    .light::before{
+        background-image: url("../img/light_off.svg");
+    }
+    .light.general::before{
+        background-image: url("../img/light_general.svg");
+    }
+    .light.beam::before{
+        background-image: url("../img/light_beam.svg");
+    }
+
+    .lock::before {
+        background-image: url("../img/lock_unlocked.svg");
+    }
+    .lock.locked::before{
+        background-image: url("../img/lock_locked.svg");
+    }
+
+
+    .misc img{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .needle-pin{
+        z-index: 11;
+    }
+
+    .needle{
+        transition: all 0.2s linear;
+        z-index: 10;
+    }
+
+
+    #speedo-right{
+        width: 300px;
+        height: 300px;
+        background: rgba(0,0,0,1);
+    }
+
+    #speedo-right .needle{
+        transform: rotate(-125deg);
+    }
+
+    #odometer, #gear{
+        font-family: 'DS-Digital', monospace;
+        position: absolute;
+        background: #71b2ef;
+        box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    #odometer{
+        font-size: 120%;
+        left: 50%;
+        bottom: 60%;
+        transform: translateX(-50%);
+        width: 41%;
+        height: 10%;
+        padding: 2px 5px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    #gear{
+        bottom: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 180%;
+        width: 17%;
+        height: 12%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #km-status{
+        margin-right: 5%;
+    }
+
+    @media (max-width: 1920px){
+        #speedo-left{
+            width: 125px;
+            height: 125px;
+        }
+        #speedo-right{
+            width: 250px;
+            height: 250px;
+        }
+
+        #odometer {
+            font-size: 100%;
+        }
+        #gear{
+            font-size: 140%;
+        }
+    }
+
+
+    @media (max-width: 1280px){
+        #speedo-left{
+            width: 100px;
+            height: 100px;
+        }
+        #speedo-right{
+            width: 200px;
+            height: 200px;
+        }
+
+        #odometer {
+            font-size: 80%;
+        }
+        #gear{
+            font-size: 100%;
+        }
+    }
+
+
+#speedo-passenger-wrapper{
+    opacity: 0;
+    background: var(--container-bg);
+    border: var(--container-border);
+
+    width: 2%;
+    height: 3%;
+
+    position: absolute;
+    right: 1%;
+    bottom: 8%;
+
+    display: flex;
+}
+
+#speedo-passenger-wrapper > div{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#speedo-passenger-wrapper > div::before{
+    content: '';
+    width: 80%;
+    height: 80%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+  
+.speed-container{
+    transform: rotate(-141deg);
+    width: fit-content;
+    margin: auto;
+}
+.box2{
+  width: 37vh;
+  height: 37vh;
+  background-size: cover;
+  clip-path: polygon(0% 0%, 0% 74%, 52% 55%, 39.5% 0%);
+  padding: 1vh;
+  font-family: 'Montserrat', sans-serif !important;
+}
+.box {
+  width: 37vh;
+  height: 32vh;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  clip-path: polygon(   0% 0%,
+                        0% 88%,
+                        21% 88%,
+                        25% 84%,
+                        74% 84%,
+                        78% 88%,
+                        100% 88%,
+                        100% 0%);
+  padding: 1vh;
+
+  background-image: url(./BGG2.png);
+  background-size: contain;
+  font-family: 'Sarpanch', sans-serif;
+}
+
+.spe span{
+  font-size: 1.4vh;
+  font-weight: 500;
+  margin-left: .2vh;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.mile span{
+  font-size: 1vh;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.tacho-meter--gear div {
+  font-size: 2.5rem;
+  text-align: center;
+  line-height: 5rem;
+  font-family: "Roboto Mono", monospace;
+  font-style: italic;
+  font-weight: bold;
+  color: #282828;
+}
+
+.info-container{
+    display: flex;
+    width: 100%;
+    height: 10vh;
+    position: absolute;
+    top: 10vh;
+    justify-content: center;
+    text-align: center;
+    margin-left: -1vh;
+}
+.speed{
+    z-index: 1;
+}
+
+.speed-num{
+    font-size: 5vh;
+    color: white;
+    font-weight: 500;
+    line-height: 2vh;
+    z-index: 1;
+}
+.speed-num span{
+    color: white;
+    margin-top: 2vh;
+    z-index: 1;
+}
+
+.speed-tag{
+    color:white;
+    font-size: 1.5vh;
+    margin-top: 1.2vh;
+    z-index: 1;
+}
+
+.miles {
+    display: flex;
+    position: absolute;
+    top: 25vh;
+    width: 100%;
+    height: 3vh;
+    margin-left: -1vh;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2vh;
+    font-weight: 200;
+    letter-spacing: .2vh;
+    z-index: 1;
+}
+.dials{
+    display: flex;
+    position: absolute;
+    top: 21vh;
+    width: 100%;
+    height: 3vh;
+    margin-left: -1vh;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2vh;
+    font-weight: 200;
+    letter-spacing: .1vh;
+}
+
+.gage{
+    display: flex;
+    position: absolute;
+    top: 15.5vh;
+    width: 100%;
+    height: 5vh;
+    margin-left: -1vh;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2vh;
+    font-weight: 200;
+    letter-spacing: .1vh;
+    z-index: 1;
+}
+
+.miles span{
+    color: rgba(208, 204, 204, 0.35);
+}
+
+.dial-img{
+    height: 2.5vh;
+    margin-left: 1vh;
+    margin-right: 1vh;
+}
+
+.dial-off{
+    filter: contrast(0) brightness(1)!important;
+}
+.dial-beam{
+    filter: contrast(255) brightness(2)!important;
+}
+.dial-general{
+    filter: contrast(1) brightness(1)!important;
+}
+
+.speed-indicator{
+    display: flex;
+    position: absolute;
+    color: white;
+    top: 73%;
+    z-index: 1000;
+    left: 17%;
+    font-size: 1.5vh;
+    font-weight: 600;
+    font-family: 'Sarpanch', sans-serif;
+}
+
+.speed-40{
+    top: 54%;
+    left: 14%;
+}
+
+.speed-60{
+    top: 35%;
+    left: 17%;
+}
+.speed-80{
+    top: 20%;
+    left: 25.5%;
+}
+.speed-100{
+    top: 11%;
+    left: 38.5%;
+}
+.speed-120{
+    top: 11%;
+    left: 54%;
+}
+.speed-140{
+    top: 20%;
+    left: 67%;
+}
+.speed-160{
+    top: 35%;
+    left: 76.5%;
+}
+.speed-180{
+    top: 54%;
+    left: 80%;
+}
+.speed-200{
+    top: 73.5%;
+    left: 76%;
+}
+
+.fuel-indicator{
+  display: block;
+  position: absolute;
+  bottom: -.5vh;
+  left: 3vh;
+  z-index: 10000;
+}
+
+.miles img{
+  width: 2.5vh;
+  margin-left: 2vh;
+  margin-right: 2vh;
+  margin-top: .5vh;
+}
+
+.gage-cont{
+    display: flex;
+    height: 4vh;
+    width: 4vh;
+    border-radius: 100%;
+    color: white;
+    border: solid .2vh white;
+    justify-content: center;
+    align-items: center;
+}
+
+.speed-container2{
+    transform: rotate(-129deg);
+    margin-left: 5vh;
+    margin-top: 2vh;
+}
+
+.ani{
+    animation: blink 1.3s linear infinite !important;
+
+}
+@keyframes blink {
+    0% {
+        filter: contrast(0)brightness(.1);
+    }
+    25% {
+        filter: contrast(0)brightness(.1);
+    }
+    26% {
+        filter: contrast(1)brightness(1);
+    }
+    74% {
+        filter: contrast(1)brightness(1);
+    }
+    75% {
+        filter: contrast(0)brightness(.1);
+    }
+    100% {
+        filter: contrast(0)brightness(.1);
+    }
+}
+.indicator-off{
+    filter: contrast(0) brightness(.1);
+
+}
+button{
+    border: none;
+    background-color: #ffcf28;
+    border-radius: 1vh;
+    padding: .5vh;
+    margin: .2vh;
+    color: black;
+    font-weight: 800;
+    transition: all ease .1s;
+}
+
+button:active{
+    background-color: black;
+    color: white;
+}

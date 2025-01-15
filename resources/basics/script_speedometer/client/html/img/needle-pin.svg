@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="350" height="350" viewBox="0 0 350 350">
+  <defs>
+    <filter id="Ellipse_9" x="163" y="163" width="28" height="28" filterUnits="userSpaceOnUse">
+      <feOffset dx="2" dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.502"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-needle-pin">
+      <rect width="350" height="350"/>
+    </clipPath>
+  </defs>
+  <g id="needle-pin" clip-path="url(#clip-needle-pin)">
+    <g id="nupsi">
+      <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Ellipse_9)">
+        <circle id="Ellipse_9-2" data-name="Ellipse 9" cx="5" cy="5" r="5" transform="translate(170 170)" fill="#e64c3c"/>
+      </g>
+      <circle id="Ellipse_10" data-name="Ellipse 10" cx="2" cy="2" r="2" transform="translate(173 173)"/>
+    </g>
+  </g>
+</svg>

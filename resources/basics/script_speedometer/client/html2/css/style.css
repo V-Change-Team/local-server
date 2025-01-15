@@ -1,0 +1,357 @@
+﻿#mainframe {
+    font-size: 20px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    background: #505050;
+    left: 21px;
+    top: 35%;
+    position: absolute;
+    width: 204px;
+    height: 286px;
+}
+
+#fuellastframe {
+    text-align: center;
+    width: 60px;
+    margin: 2px;
+    border: white 2px solid;
+    position: absolute;
+    height: 40px;
+}
+
+#fuellasttitle {
+    font-size: 11px;
+    position: absolute;
+    top: -4px;
+    left: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #505050;
+}
+
+#fuellast {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+}
+
+#fuelaverageframe {
+    text-align: center;
+    left: 68px;
+    width: 60px;
+    margin: 2px;
+    border: white 2px solid;
+    position: absolute;
+    height: 40px;
+}
+
+#fuellaveragetitle {
+    font-size: 11px;
+    position: absolute;
+    top: -4px;
+    left: 6px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #505050;
+}
+
+#average {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+}
+
+#fuelframe {
+    text-align: center;
+    left: 136px;
+    width: 60px;
+    margin: 2px;
+    border: #00FF00 2px solid;
+    position: absolute;
+    height: 40px;
+}
+
+#fueltitle {
+    font-size: 11px;
+    position: absolute;
+    top: -4px;
+    left: 14px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #505050;
+}
+
+#fuel {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+}
+
+#bestlapframe {
+    text-align: center;
+    width: 128px;
+    margin: 2px;
+    border: white 2px solid;
+    position: absolute;
+    height: 40px;
+    top: 47px;
+    background: #00BFFF;
+}
+
+#bestlaptitle {
+    font-size: 11px;
+    position: absolute;
+    top: -4px;
+    left: 40px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #505050;
+}
+
+#bestlap {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+}
+
+#lapframe {
+    text-align: center;
+    width: 60px;
+    margin: 2px;
+    border: yellow 2px solid;
+    position: absolute;
+    height: 40px;
+    left: 136px;
+    top: 47px;
+}
+
+#laptitle {
+    font-size: 11px;
+    position: absolute;
+    top: -4px;
+    left: 17px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #505050;
+}
+
+#lap {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+}
+
+#lastlapframe {
+    text-align: center;
+    width: 94px;
+    margin: 2px;
+    border: white 2px solid;
+    position: absolute;
+    height: 40px;
+    top: 94px;
+}
+
+#lastlaptitle {
+    font-size: 11px;
+    position: absolute;
+    top: -4px;
+    left: 24px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #505050;
+}
+
+#lastlap {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+}
+
+
+#lastlapperformanceframe {
+    text-align: center;
+    width: 94px;
+    margin: 2px;
+    border: white 2px solid;
+    position: absolute;
+    height: 40px;
+    left: 102px;
+    top: 94px;
+}
+
+#lastlapperformancetitle {
+    font-size: 11px;
+    position: absolute;
+    top: -4px;
+    left: 22px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #505050;
+}
+
+#lastlapperformance {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+}
+
+#split1frame {
+    text-align: center;
+    width: 94px;
+    margin: 2px;
+    border: #f4a688 2px solid;
+    position: absolute;
+    height: 40px;
+    top: 190px;
+}
+
+#split1title {
+    font-size: 11px;
+    position: absolute;
+    top: -4px;
+    left: 30px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #505050;
+}
+
+#split1lap {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+}
+
+#split1diffframe {
+    text-align: center;
+    width: 94px;
+    margin: 2px;
+    border: #f4a688 2px solid;
+    position: absolute;
+    height: 40px;
+    left: 102px;
+    top: 190px;
+}
+
+#split1difftitle {
+    font-size: 11px;
+    position: absolute;
+    top: -4px;
+    left: 15px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #505050;
+}
+
+#split1difflap {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+}
+
+
+#split2frame {
+    text-align: center;
+    width: 94px;
+    margin: 2px;
+    border: #87bdd8 2px solid;
+    position: absolute;
+    height: 40px;
+    top: 238px;
+}
+
+#split2title {
+    font-size: 11px;
+    position: absolute;
+    top: -4px;
+    left: 30px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #505050;
+}
+
+#split2lap {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+}
+
+#split2diffframe {
+    text-align: center;
+    width: 94px;
+    margin: 2px;
+    border: #87bdd8 2px solid;
+    position: absolute;
+    height: 40px;
+    left: 102px;
+    top: 238px;
+}
+
+#split2difftitle {
+    font-size: 11px;
+    position: absolute;
+    top: -4px;
+    left: 15px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #505050;
+}
+
+#split2difflap {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+}
+
+#currentlapframe {
+    text-align: center;
+    width: 94px;
+    margin: 2px;
+    border: white 2px solid;
+    position: absolute;
+    height: 40px;
+    top: 142px;
+}
+
+#currentlaptitle {
+    font-size: 11px;
+    position: absolute;
+    top: -4px;
+    left: 13px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #505050;
+}
+
+#currentlaplap {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+}
+
+#currentlapdiffframe {
+    text-align: center;
+    width: 94px;
+    margin: 2px;
+
+    position: absolute;
+    height: 40px;
+    left: 102px;
+    top: 142px;
+}
+
+#currentlapdifftitle {
+    font-size: 11px;
+    position: absolute;
+    top: -4px;
+    left: 22px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #505050;
+}
+
+#currentlapdifflap {
+    position: absolute;
+    top: 6px;
+    width: 100%;
+    font-size: 11px;
+}
