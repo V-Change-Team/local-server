@@ -2,3 +2,5 @@
 server.log
 /.server-crashes-cache
 /cache
+/resources/load
+/resources/notLoaded
