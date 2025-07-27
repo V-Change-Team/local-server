@@ -4,3 +4,5 @@ server.log
 /cache
 /resources/load
 /resources/notLoaded
+server.toml
+resources/f_scripts
