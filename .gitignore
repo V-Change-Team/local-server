@@ -6,3 +6,4 @@ server.log
 /resources/notLoaded
 server.toml
 resources/f_scripts
+/resources
